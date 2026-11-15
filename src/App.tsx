@@ -8,11 +8,9 @@ import {
   ExternalLink,
   FolderOpen,
   Loader2,
+  Pin,
   Puzzle,
 } from 'lucide-react';
-import heroWorkspaceImg from './assets/images/typeme_hero_workspace_1794746255757.jpg';
-import extractPackageImg from './assets/images/typeme_extract_package_1794746255840.jpg';
-import extensionPopupImg from './assets/images/typeme_extension_popup_1794746257934.jpg';
 import { buildVerifiedExtensionZip, triggerBlobDownload } from './lib/extensionArchive';
 
 interface InstallStep {
@@ -85,9 +83,6 @@ export default function App() {
   const [openFaqId, setOpenFaqId] = useState<string>('manifest-error');
   const [zipStatus, setZipStatus] = useState<'idle' | 'building' | 'done' | 'error'>('idle');
   const [zipFeedback, setZipFeedback] = useState('');
-  const [heroImgFailed, setHeroImgFailed] = useState(false);
-  const [extractImgFailed, setExtractImgFailed] = useState(false);
-  const [popupImgFailed, setPopupImgFailed] = useState(false);
 
   const handleDownloadZip = async () => {
     if (zipStatus === 'building') return;
@@ -132,8 +127,13 @@ export default function App() {
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-8 px-6 py-3.5">
           <a
             href="#top"
-            className="text-lg font-bold tracking-tight text-slate-900 whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-700"
+            className="flex items-center gap-2.5 text-lg font-bold tracking-tight text-slate-900 whitespace-nowrap shrink-0 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-emerald-700"
           >
+            <img
+              src="/extension-icons/icon48.png"
+              alt="TypeMe logo"
+              className="h-6 w-6 rounded-md object-cover"
+            />
             TypeMe
           </a>
 
@@ -155,7 +155,7 @@ export default function App() {
         {/* Hero with the single primary Download button */}
         <section className="border-b border-slate-200 bg-white">
           <div className="mx-auto max-w-5xl px-6 py-12 lg:py-16">
-            <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-stretch">
+            <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:items-center">
               <div className="lg:col-span-6 flex flex-col justify-center">
                 <p className="text-xs font-medium text-slate-500">
                   Chrome Extension · Version 2.6 · Windows &amp; macOS
@@ -203,27 +203,59 @@ export default function App() {
                 )}
               </div>
 
-              <div className="lg:col-span-6">
-                <div className="h-full overflow-hidden rounded-xl border border-slate-200 bg-slate-100">
-                  {!heroImgFailed ? (
-                    <img
-                      src={heroWorkspaceImg}
-                      alt="Laptop running Google Chrome with TypeMe extension popup"
-                      referrerPolicy="no-referrer"
-                      onError={() => setHeroImgFailed(true)}
-                      className="h-full min-h-[240px] w-full object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-full min-h-[260px] flex-col items-center justify-center p-8 text-center">
-                      <Puzzle className="h-10 w-10 text-emerald-700" />
-                      <p className="mt-3 text-sm font-semibold text-slate-900">
-                        TypeMe Chrome Extension
-                      </p>
-                      <p className="mt-1 text-xs text-slate-600">
-                        Extract the ZIP folder and load unpacked in Chrome.
-                      </p>
+              {/* Authentic TypeMe Extension Popup Preview */}
+              <div className="lg:col-span-6 flex justify-center lg:justify-end">
+                <div className="w-full max-w-[360px] rounded-xl border border-slate-800 bg-[#090d16] p-5 text-slate-100 shadow-sm">
+                  <div className="flex items-center justify-between border-b border-slate-800 pb-3.5">
+                    <div className="flex items-center gap-2.5">
+                      <img
+                        src="/extension-icons/icon48.png"
+                        alt="TypeMe extension icon"
+                        className="h-7 w-7 rounded-md object-cover"
+                      />
+                      <span className="text-sm font-bold text-white">TypeMe</span>
                     </div>
-                  )}
+                    <span className="rounded border border-emerald-500/30 bg-emerald-500/15 px-2 py-0.5 text-[11px] font-semibold text-emerald-400">
+                      Active
+                    </span>
+                  </div>
+
+                  <div className="mt-3.5 rounded-lg border border-slate-800 bg-[#0f172a] p-3">
+                    <p className="text-[11px] font-semibold text-slate-400">
+                      Machine Device ID (1-PC Lock)
+                    </p>
+                    <div className="mt-1.5 flex items-center justify-between rounded-md border border-slate-700 bg-[#040711] px-2.5 py-2 font-mono text-xs font-bold text-emerald-400">
+                      <span>TM-XXXX-XXXX-XXXX</span>
+                      <span className="rounded border border-slate-600 bg-slate-800 px-2 py-0.5 font-sans text-[11px] font-medium text-slate-200">
+                        Copy
+                      </span>
+                    </div>
+                    <div className="mt-2.5 rounded-md bg-slate-800/50 px-2.5 py-2 text-xs font-semibold text-emerald-400">
+                      ✓ Active &amp; Authorized
+                    </div>
+                  </div>
+
+                  <div className="mt-2.5 rounded-md bg-emerald-500 py-2.5 text-center text-xs font-bold text-[#090d16]">
+                    ▶ Launch on Current Tab
+                  </div>
+
+                  <div className="mt-2.5 flex items-center justify-between rounded-lg border border-slate-800 bg-[#0f172a] px-3 py-2.5">
+                    <div>
+                      <p className="text-xs font-semibold text-slate-200">Auto-Run on Refresh</p>
+                      <p className="text-[10px] text-slate-400">Auto-starts on page reload</p>
+                    </div>
+                    <div className="flex h-5 w-9 items-center justify-end rounded-full bg-emerald-500 p-0.5">
+                      <span className="h-4 w-4 rounded-full bg-white" />
+                    </div>
+                  </div>
+
+                  <div className="mt-2 rounded-md border border-slate-700 bg-slate-800 py-2 text-center text-xs font-semibold text-slate-200">
+                    License Active (Verified)
+                  </div>
+
+                  <p className="mt-2.5 text-center font-mono text-[10px] text-slate-500">
+                    One PC, One ID
+                  </p>
                 </div>
               </div>
             </div>
@@ -282,27 +314,40 @@ export default function App() {
               ))}
             </ol>
 
-            <div className="lg:col-span-5">
-              <div className="h-full overflow-hidden rounded-lg border border-slate-200 bg-slate-50">
-                {!extractImgFailed ? (
-                  <img
-                    src={extractPackageImg}
-                    alt="Extracted TypeMe extension folder ready for Chrome"
-                    referrerPolicy="no-referrer"
-                    onError={() => setExtractImgFailed(true)}
-                    className="h-full min-h-[240px] w-full object-cover"
-                  />
-                ) : (
-                  <div className="flex h-full min-h-[240px] flex-col items-center justify-center p-6 text-center">
-                    <FolderOpen className="h-9 w-9 text-slate-700" />
-                    <p className="mt-3 text-sm font-semibold text-slate-900">
-                      Extract Before Loading
-                    </p>
-                    <p className="mt-1 text-xs text-slate-600">
-                      Unpack the ZIP first, then pick the folder in Chrome.
-                    </p>
+            {/* Chrome Extensions Window & Folder Diagram */}
+            <div className="lg:col-span-5 flex flex-col justify-between gap-4 rounded-lg border border-slate-200 bg-slate-50 p-5">
+              <div>
+                <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+                  <span className="font-mono text-xs text-slate-600">chrome://extensions</span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-medium text-slate-700">Developer mode</span>
+                    <span className="inline-flex h-4 w-7 items-center justify-end rounded-full bg-blue-600 p-0.5">
+                      <span className="h-3 w-3 rounded-full bg-white" />
+                    </span>
                   </div>
-                )}
+                </div>
+
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <span className="rounded-md border border-blue-200 bg-white px-3 py-1.5 text-xs font-semibold text-blue-700">
+                    Load unpacked
+                  </span>
+                  <span className="rounded-md border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-500">
+                    Pack extension
+                  </span>
+                  <span className="rounded-md border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-500">
+                    Update
+                  </span>
+                </div>
+              </div>
+
+              <div className="rounded-lg border border-slate-200 bg-white p-4">
+                <div className="flex items-center gap-2.5 text-xs font-semibold text-slate-900">
+                  <FolderOpen className="h-4 w-4 text-emerald-700" />
+                  <span>Select the extracted folder</span>
+                </div>
+                <p className="mt-2 text-xs leading-relaxed text-slate-600">
+                  After extracting <span className="font-mono text-slate-800">TypeMe-Chrome-Extension.zip</span>, choose the unpacked folder directly—never select the compressed `.zip` file.
+                </p>
               </div>
             </div>
           </div>
@@ -311,7 +356,7 @@ export default function App() {
         {/* Activation & Daily Use */}
         <section id="activation" className="border-y border-slate-200 bg-white">
           <div className="mx-auto max-w-5xl px-6 py-14 lg:py-16">
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-stretch">
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-center">
               <div className="lg:col-span-7 flex flex-col justify-between gap-6">
                 <div>
                   <h2 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl [text-wrap:balance]">
@@ -385,28 +430,43 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="lg:col-span-5">
-                <div className="h-full overflow-hidden rounded-xl border border-slate-200 bg-slate-100">
-                  {!popupImgFailed ? (
-                    <img
-                      src={extensionPopupImg}
-                      alt="TypeMe icon active in Google Chrome toolbar"
-                      referrerPolicy="no-referrer"
-                      onError={() => setPopupImgFailed(true)}
-                      className="h-full min-h-[240px] w-full object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-full min-h-[240px] flex-col items-center justify-center p-6 text-center">
-                      <Puzzle className="h-9 w-9 text-emerald-700" />
-                      <p className="mt-3 text-sm font-semibold text-slate-900">
-                        Toolbar Access
-                      </p>
-                      <p className="mt-1 text-xs text-slate-600">
-                        Pin TypeMe to check status and launch anytime.
-                      </p>
+              {/* Chrome Toolbar Pin Preview */}
+              <div className="lg:col-span-5 rounded-xl border border-slate-200 bg-slate-50 p-5">
+                <div className="rounded-lg border border-slate-200 bg-white p-3">
+                  <div className="flex items-center justify-between gap-2 rounded-md bg-slate-100 px-3 py-2">
+                    <span className="truncate font-mono text-xs text-slate-500">
+                      https://www.facebook.com/...
+                    </span>
+                    <div className="flex items-center gap-2.5 shrink-0">
+                      <img
+                        src="/extension-icons/icon48.png"
+                        alt="Pinned TypeMe toolbar icon"
+                        className="h-5 w-5 rounded object-cover"
+                      />
+                      <Puzzle className="h-4 w-4 text-slate-600" />
                     </div>
-                  )}
+                  </div>
+
+                  <div className="mt-3 rounded-lg border border-slate-200 bg-white p-3">
+                    <p className="text-xs font-semibold text-slate-800">Extensions</p>
+                    <div className="mt-2.5 flex items-center justify-between rounded-md bg-slate-50 px-3 py-2">
+                      <div className="flex items-center gap-2.5">
+                        <img
+                          src="/extension-icons/icon48.png"
+                          alt="TypeMe icon"
+                          className="h-5 w-5 rounded object-cover"
+                        />
+                        <span className="text-xs font-semibold text-slate-900">TypeMe</span>
+                      </div>
+                      <Pin className="h-3.5 w-3.5 text-emerald-700" />
+                    </div>
+                  </div>
                 </div>
+
+                <p className="mt-3 text-xs leading-relaxed text-slate-600">
+                  Pin TypeMe from the puzzle menu so the icon stays visible right beside your
+                  address bar.
+                </p>
               </div>
             </div>
           </div>
