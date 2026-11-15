@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TypeMe</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      width: 340px;
+      background: #090d16;
+      color: #f1f5f9;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 16px;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #1e293b;
+      margin-bottom: 14px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-img {
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      display: block;
+      object-fit: cover;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.35);
+    }
+    .title { font-size: 15px; font-weight: 700; color: #fff; }
+    .badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .badge-locked { background: rgba(244, 63, 94, 0.15); color: #f43f5e; border: 1px solid rgba(244, 63, 94, 0.3); }
+    .badge-active { background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3); }
+    
+    .card {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+    .label {
+      font-size: 11px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .hwid-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #040711;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid #334155;
+      font-family: monospace;
+      font-size: 13px;
+      color: #34d399;
+      font-weight: 700;
+    }
+    .copy-btn {
+      background: #1e293b;
+      color: #e2e8f0;
+      border: 1px solid #475569;
+      padding: 4px 8px;
+      font-size: 11px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .copy-btn:hover { background: #334155; }
+    
+    .contact-box {
+      margin-top: 10px;
+      padding: 10px;
+      background: rgba(30, 41, 59, 0.5);
+      border-radius: 6px;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+    .contact-link {
+      display: block;
+      margin-top: 6px;
+      color: #38bdf8;
+      text-decoration: none;
+      font-weight: 700;
+      font-family: monospace;
+    }
+    .btn-run {
+      width: 100%;
+      background: #10b981;
+      color: #090d16;
+      border: none;
+      padding: 11px;
+      border-radius: 6px;
+      font-weight: 800;
+      font-size: 13px;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .btn-run:hover { background: #059669; }
+    .btn-primary {
+      width: 100%;
+      background: #1e293b;
+      color: #e2e8f0;
+      border: 1px solid #334155;
+      padding: 9px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 12px;
+      cursor: pointer;
+      margin-top: 6px;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: #334155; }
+    .toggle-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 9px 12px;
+      margin-top: 8px;
+      margin-bottom: 4px;
+    }
+    .toggle-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .toggle-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+    .toggle-desc {
+      font-size: 10px;
+      color: #94a3b8;
+    }
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 38px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #334155;
+      transition: .2s;
+      border-radius: 20px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 14px;
+      width: 14px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .2s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: #10b981;
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+    }
+    input:checked + .slider:before {
+      transform: translateX(18px);
+    }
+    .footer {
+      font-size: 10px;
+      color: #64748b;
+      text-align: center;
+      margin-top: 10px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="brand">
+      <img src="icons/icon48.png" alt="TypeMe" class="logo-img">
+      <div class="title">TypeMe</div>
+    </div>
+    <div id="statusBadge" class="badge badge-locked">Locked</div>
+  </div>
+
+  <div class="card">
+    <div class="label">Machine Device ID (1-PC Lock)</div>
+    <div class="hwid-box">
+      <span id="deviceIdText">TM-7E5F-325D-45FA</span>
+      <button class="copy-btn" id="copyBtn">Copy</button>
+    </div>
+
+    <div id="lockedSection" class="contact-box">
+      <span style="color: #cbd5e1;">To activate this device, send your Device ID to:</span>
+      <a class="contact-link" href="https://t.me/APKBrainKillerofficial" target="_blank">@APKBrainKillerofficial</a>
+    </div>
+
+    <div id="activeSection" style="display: none; margin-top: 10px;" class="contact-box">
+      <span style="color: #34d399; font-weight: 700;">✓ Active & Authorized</span>
+    </div>
+  </div>
+
+  <button class="btn-run" id="runTabBtn" style="display: none;">
+    ▶ Launch on Current Tab
+  </button>
+
+  <div id="autoRunCard" style="display: none;" class="toggle-card">
+    <div class="toggle-info">
+      <div class="toggle-title">Auto-Run on Refresh</div>
+      <div class="toggle-desc">Auto-starts on page reload</div>
+    </div>
+    <label class="switch">
+      <input type="checkbox" id="autoRunToggle" checked>
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <button class="btn-primary" id="verifyBtn">Verify License Now</button>
+
+  <div id="diagNote" style="display: none; margin-top: 8px; padding: 7px 10px; border-radius: 6px; font-size: 11px; line-height: 1.4; background: #0f172a; border: 1px solid #334155; color: #cbd5e1; word-break: break-word;"></div>
+
+  <div class="footer">One PC, One ID</div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

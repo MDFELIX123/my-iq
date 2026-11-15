@@ -1,0 +1,6 @@
+{
+  "name": "Sequential Bootloader",
+  "description": "Staged loader for sequencing GitHub ID checks, scripts, and sandboxed advertisement HTML without launch crashes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
